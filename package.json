@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "prjs": "prettier --single-quote --no-semi --write public/js/script.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "nodemon": "^1.18.11",
+    "prettier": "^1.16.4",
     "socket.io": "^2.2.0"
   }
 }
