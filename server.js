@@ -19,18 +19,38 @@ function homePage(req, res) {
 }
 
 io.on('connection', socket => {
-  console.log('a user connected')
+  let userID = socket.id
+
+  io.emit('user connected', userID)
 
   socket.on('editor input', input => {
-    io.emit('editor input', input)
+    if (input.startsWith('<') && input.endsWith('>')) {
+      const getAtrb = /(<)([\w\d]*)/g,
+            getAtrbVal = /(>)([\w\d\s\W]*)(<)/g
+
+      let atrb = getAtrb.exec(input),
+          atrbVal = getAtrbVal.exec(input)
+
+      io.emit('create element', atrb, atrbVal)
+    } else if (input.startsWith('/')) {
+      const getCommand = /(\/)([\w\d]*)/g
+
+      let command = getCommand.exec(input)
+
+      io.emit('call command', command)
+    } else {
+      io.emit('editor input', input)
+    }
   })
 
   socket.on('chat message', msg => {
-    io.emit('chat message', msg)
+    let splitMsg = msg.split(' ')
+
+    io.emit('new message', splitMsg)
   })
 
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    io.emit('user disconnected', userID)
   })
 })
 
