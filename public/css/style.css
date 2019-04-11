@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6, p {
 
 main {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
   padding: 1em;
   box-sizing: border-box;
@@ -122,7 +122,6 @@ ul li:first-child {
 
 #rtw-chat-messages li{
   padding: 0.5em 0 0.5em 1em;
-  color: #ffffff;
 }
 
 #rtw-chat-messages li:nth-child(even) {
@@ -131,6 +130,24 @@ ul li:first-child {
 
 .rtw-not-valid {
   color: red;
+}
+
+.rtw-user-connected {
+  color: green;
+  font-style: italic;
+}
+
+.rtw-user-disconnected {
+  color: red;
+  font-style: italic;
+}
+
+.rtw-chat-html {
+  padding: 0.1em 0.5em;
+  color: #1e1f1c;
+  text-transform: lowercase;
+  background-color: #f6f8fa;
+  border-radius: 0.5em;
 }
 
 /* ---------- KEYFRAMES ---------- */
