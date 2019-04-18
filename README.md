@@ -14,6 +14,8 @@ This is my repo for the Real-Time Web course
   * [Authentication](#authentication)
   * [Rate Limit](#rate-limit)
 * [Research](#research-)
+  * [Skecth](#skecth)
+  * [Data Life Cycle](#data-life-cycle)
 * [How It Works](#how-it-works-️)
 * [Sources](#sources-)
   * [Honourable Mentions](#honourable-mentions)
@@ -28,7 +30,7 @@ This is a list of things I want to do in this project:
 - [ ] Handle multi-user support
 
 ## Description 📝
-For this course I made a web application that allows users to learn HTML together by using a build in text editor and chat. Users can write and discuss the HTML directly from their browser. Users are also able, by using the Github API, to create, commit and push to a Github repo. In the browser users are also able to see the number of commits, issues and stars the repo has.
+For this course I made a web application that allows users to learn HTML together by using a build in text editor and chat. Users can write and discuss the HTML directly from their browser. Users are also able, by using the Github API, to create, commit and push to a Github repo. In the browser users are also able to see the number of commits, issues and stars the repo has. This will be the real time data.
 
 ## Installing 🔍
 To install this application enter the following into your terminal:
@@ -122,6 +124,12 @@ This is a sketch of the most important screen.
 
 ### Data Life Cycle
 ![Data Life Cycle](https://i.imgur.com/cwbVmTx.jpg)
+
+### Feedback
+I would like feedback on the following points:
+
+  * What do you think of my concept? Are their areas on which I cloud improve? Most importantly when it comes to the data being used.
+  * Is the data life cycle clear enough? Are their things I didn't account for?
 
 ## How It Works 🛠️
 Here I explain the core features of this project.
