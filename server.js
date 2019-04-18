@@ -1,10 +1,19 @@
 'use strict'
 
 const express = require('express'),
+      helper = require('./public/js/modules/helper.js'),
       app = express(),
+      request = require('request'),
       http = require('http').Server(app),
       io = require('socket.io')(http),
       port = 3000
+
+const options = {
+        url: 'https://api.github.com/search/repositories?q=html+language:html+pushed:>' + helper.getYesterday(),
+        headers: {
+          'User-Agent': 'request'
+        }
+      }
 
 app
   .set('view engine', 'ejs')
@@ -14,9 +23,23 @@ app
 
   .get('/', homePage)
 
-function homePage(req, res) {
-  res.render('pages/index.ejs')
+function callback(error, response, body) {
+  let info = JSON.parse(body)
+
+  console.log("Number of repositories: " + info.total_count)
+
+  return info
 }
+
+function homePage(req, res) {
+  let data = request(options, callback)
+
+  console.log(data)
+
+  res.render('pages/index.ejs', {data: data})
+}
+
+// ---------- SOCKET.IO ---------- //
 
 io.on('connection', socket => {
   let userID = socket.id
