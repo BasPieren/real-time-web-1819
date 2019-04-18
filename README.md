@@ -106,7 +106,7 @@ There are two ways to authenticate through the GitHub API. Requests that require
 #### OAuth2 key/secret
 `curl 'https://api.github.com/users/whatever?client_id=xxxx&client_secret=yyyy'`
 
-Using your `client_id` and `client_secret` does not authenticate as a user, it will only identify your OAuth application to increase your rate limit. Permissions are only granted to users, not applications, and you will only get back data that an unauthenticated user would see. For this reason, you should only use the OAuth2 key/secret in server-to-server scenarios. Don't leak your OAuth application's client secret to your users.
+Using your `client_id` and `client_secret` does not authenticate as a user, it will only identify your OAuth application to increase your rate limit. Permissions are only granted to users, not applications, and you will only get back data that an unauthenticated user would see. For this reason, you should only use the OAuth2 key/secret in server-to-server scenarios.
 
 ### Rate Limit
 When there is basic authentication or 0Auth authentication, you can make u to 5000 requests per hour. For unauthenticated requests there is a rate limit of 60 request per hour.
@@ -119,6 +119,9 @@ This is a sketch of the most important screen.
 
 ![Homepage Sketch](https://i.imgur.com/PecHr6X.jpg)
 > Homepage sketch
+
+### Data Life Cycle
+![Data Life Cycle](https://i.imgur.com/cwbVmTx.jpg)
 
 ## How It Works 🛠️
 Here I explain the core features of this project.
