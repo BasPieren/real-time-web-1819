@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/BasPieren/real-time-web-1819#readme",
   "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^7.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "nodemon": "^1.18.11",
