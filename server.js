@@ -1,19 +1,18 @@
 'use strict'
 
-const express = require('express'),
-      helper = require('./public/js/modules/helper.js'),
+require('dotenv').config()
+
+const helper = require('./public/js/modules/helper.js'),
+      express = require('express'),
+      axios = require('axios'),
       app = express(),
       request = require('request'),
       http = require('http').Server(app),
       io = require('socket.io')(http),
       port = 3000
 
-const options = {
-        url: 'https://api.github.com/search/repositories?q=html+language:html+pushed:>' + helper.getYesterday(),
-        headers: {
-          'User-Agent': 'request'
-        }
-      }
+const clientID = process.env.CLIENT_ID,
+      clientSecret = process.env.CLIENT_SECRET
 
 app
   .set('view engine', 'ejs')
@@ -22,21 +21,29 @@ app
   .use(express.static('public'))
 
   .get('/', homePage)
+  .get('/redirect', (req, res) => {
+    const requestToken = req.query.code
 
-function callback(error, response, body) {
-  let info = JSON.parse(body)
+    axios({
+      method: 'post',
+      url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
+      headers: {
+        accept: 'application/json'
+      }
+    }).then(response => {
+      const accessToken = response.data.access_token
 
-  console.log("Number of repositories: " + info.total_count)
-
-  return info
-}
+      res.redirect(`/dashboard?access_token=${accessToken}`)
+    }).catch(err => console.error(err))
+  })
+  .get('/dashboard', dashboardPage)
 
 function homePage(req, res) {
-  let data = request(options, callback)
+  res.render('pages/index.ejs')
+}
 
-  console.log(data)
-
-  res.render('pages/index.ejs', {data: data})
+function dashboardPage(req, res) {
+  res.render('pages/dashboard.ejs')
 }
 
 // ---------- SOCKET.IO ---------- //
