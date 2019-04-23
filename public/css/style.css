@@ -1,5 +1,5 @@
 /* ---------- FONTS ---------- */
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Source+Code+Pro:300,400,500,700,900');
 
 /* ---------- COLORS ---------- */
 /* GREEN: #00ec26 */
@@ -13,10 +13,41 @@
   padding: 0;
 }
 
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75em;
+  font-family: 'Roboto', sans-serif;
+  background-color: #1e1f1c;
+  box-sizing: border-box;
+}
+
+nav a {
+  color: #ffffff;
+  transition: 0.5s;
+}
+
+nav a:hover {
+  color: #00ec26;
+}
+
+nav h3 {
+  margin: 0 auto 0 1em;
+  font-family: 'Roboto', sans-serif;
+  color: #ffffff;
+}
+
+nav img {
+  width: auto;
+  max-height: 3em;
+  border-radius: 50%;
+}
+
 body {
   height: 100vh;
   box-sizing: border-box;
-  background-color: #272823
+  background-color: #272823;
 }
 
 h1, h2, h3, h4, h5, h6, p {
@@ -68,7 +99,7 @@ ul li:first-child {
   margin: 0;
 }
 
-/* ---------- CLASSES & IDS ---------- */
+/* ---------- IDS ---------- */
 #rtw-text-editor-form button,  #rtw-chat-box-form button{
   display: none;
 }
@@ -128,6 +159,7 @@ ul li:first-child {
   background-color: #43463f;
 }
 
+/* ---------- CLASSES ---------- */
 .rtw-not-valid {
   color: red;
 }
