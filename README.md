@@ -138,10 +138,12 @@ Here I explain the core features of this project.
 This is a list of all the sources I used during this project:
 
   * [Socket.io | Get started](https://socket.io/get-started/chat/)
+  * [Implementing OAuth 2.0 with Node.js](https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js/)
 
 ### Honourable Mentions
 
   * [Jesse Dijkman](https://github.com/jesseDijkman1/)
+  * [Jeroen van Berkum](https://github.com/jeroenvb/)
 
 ## Licence 🔓
 MIT © [Bas Pieren](https://github.com/BasPieren)
