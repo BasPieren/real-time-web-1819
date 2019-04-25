@@ -4,8 +4,14 @@
 /* ---------- COLORS ---------- */
 /* GREEN: #00ec26 */
 /* LIGHT BLUE: #61bfd0 */
+/* PINK: #f72d73 */
 /* DARK BLACK: #1e1f1c */
 /* LIGHT BLACK: #272823 */
+
+/* ---------- FONT AWESOME ---------- */
+.fa-github {
+  margin: 0 0.5em 0 0;
+}
 
 /* ---------- GENERAL ---------- */
 * {
@@ -17,7 +23,7 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75em;
+  padding: 1em;
   font-family: 'Roboto', sans-serif;
   background-color: #1e1f1c;
   box-sizing: border-box;
@@ -25,7 +31,7 @@ nav {
 
 nav a {
   color: #ffffff;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 nav a:hover {
@@ -52,6 +58,11 @@ body {
 
 h1, h2, h3, h4, h5, h6, p {
   font-family: 'Source Code', monospace;
+}
+
+h3 {
+  margin: 0 0 1em 0;
+  color: #f72d73;
 }
 
 main {
@@ -100,7 +111,32 @@ ul li:first-child {
 }
 
 /* ---------- IDS ---------- */
-#rtw-text-editor-form button,  #rtw-chat-box-form button{
+#rtw-create-repo {
+  display: flex;
+  align-items: center;
+  margin: 0 0 1em 0;
+}
+
+#rtw-create-repo label {
+  margin: 0 0.5em 0 0;
+  font-family: 'Roboto', sans-serif;
+  color: #ffffff;
+}
+
+#rtw-create-repo input[type='text'] {
+  margin: 0 1em 0 0;
+}
+
+#rtw-create-repo select:first-of-type {
+  margin: 0 1em 0 0;
+}
+
+#rtw-create-repo button {
+  margin: 0 0 0 auto;
+  padding: 0.5em;
+}
+
+#rtw-text-editor-form button,  #rtw-chat-box-form button {
   display: none;
 }
 
@@ -151,7 +187,7 @@ ul li:first-child {
   overflow-y: scroll;
 }
 
-#rtw-chat-messages li{
+#rtw-chat-messages li {
   padding: 0.5em 0 0.5em 1em;
 }
 
@@ -180,6 +216,21 @@ ul li:first-child {
   text-transform: lowercase;
   background-color: #f6f8fa;
   border-radius: 0.5em;
+}
+
+.rtw-github-login {
+  padding: 1em;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+  text-align: center;
+  background-color: #444444;
+  border: 1px solid #1e1f1c;
+  transition: 0.3s;
+}
+
+.rtw-github-login:hover {
+  background-color: #1e1f1c;
 }
 
 /* ---------- KEYFRAMES ---------- */
