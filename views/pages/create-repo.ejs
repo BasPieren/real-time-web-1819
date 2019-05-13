@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+
+<header>
+  <h1>Create a <span>Repositorie</span></h1>
+  <p>First create your own GitHub repositorie.</p>
+</header>
+
+<main>
+  <form id="rtw-create-repo" action="/dashboard" method="post">
+    <label for="repo-name">Name</label>
+    <input type="text" name="repo-name">
+
+    <label for="repo-description">Description</label>
+    <input type="text" name="repo-description">
+
+    <button type="submit">Create Repo</button>
+  </form>
+</main>
+
+<% include ../partials/footer %>
