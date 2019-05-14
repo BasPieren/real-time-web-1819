@@ -10,7 +10,7 @@ function getUserData() {
     .then(res => res.json())
     .then(res => {
       const body = document.querySelector('body'),
-            nav = document.createElement('nav'),
+            header = document.createElement('header'),
             h3 = document.createElement('h3'),
             a = document.createElement('a'),
             img = document.createElement('img')
@@ -20,10 +20,10 @@ function getUserData() {
       a.textContent = 'Sign Out'
       img.src = `${res.avatar_url}`
 
-      body.insertBefore(nav, body.firstChild)
-      nav.appendChild(img)
-      nav.appendChild(h3)
-      nav.appendChild(a)
+      body.insertBefore(header, body.firstChild)
+      header.appendChild(img)
+      header.appendChild(h3)
+      header.appendChild(a)
     })
     .catch(err => console.error(err))
 }
