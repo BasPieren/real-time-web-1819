@@ -24,6 +24,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 1em;
+  height: 10vh;
   font-family: 'Roboto', sans-serif;
   background-color: #1e1f1c;
   box-sizing: border-box;
@@ -73,26 +74,27 @@ main {
   box-sizing: border-box;
 }
 
-body > header {
+header {
   padding: 1em;
-  box-sizing: border-box;
+  height: 15vh;
   color: #ffffff;
+  box-sizing: border-box;
 }
 
-body > header h1 {
+header h1 {
   margin-bottom: 0.5em;
   text-transform: uppercase;
 }
 
-body > header h1 ~ p {
+header h1 ~ p {
   margin-bottom: 1em;
 }
 
-body > header h1 span, p span {
+header h1 span, p span {
   color: #f72d73;
 }
 
-body > header a {
+header a {
   color: #61bfd0;
 }
 
@@ -108,6 +110,24 @@ ul li {
 
 ul li:first-child {
   margin: 0;
+}
+
+footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1em;
+  height: 15vh;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+footer p {
+  padding: 0.5em 1em;
+  color: #24292e;
+  background-color: #eff3f6;
+  border: 1px solid #1b1e22;
+  border-radius: .25em;
 }
 
 /* ---------- IDS ---------- */
