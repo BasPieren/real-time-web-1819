@@ -20,6 +20,10 @@ function renderRepoData() {
     helpText.innerHTML = 'Need help getting started? Type <span>/help</span> in the terminal. Or look on <a href="https://developer.mozilla.org/nl/docs/Web/HTML" target="_blank">MDN</a>.'
 
     pDescription.className = 'rtw-repo-description'
+    pIssues.className = 'rtw-repo-data'
+    pWatchers.className = 'rtw-repo-data'
+    pStars.className = 'rtw-repo-data'
+    pForks.className = 'rtw-repo-data'
 
     repoName.textContent = parseRepoData.name
     pDescription.textContent = parseRepoData.description
