@@ -4,32 +4,39 @@ function renderRepoData() {
   let getRepoData = localStorage.getItem('repoData'),
       parseRepoData = JSON.parse(getRepoData)
 
-  console.log(parseRepoData)
-
   if (document.body.contains(form)) {
-    const header = document.querySelector('header'),
-          footer = document.querySelector('footer'),
-          div = document.createElement('div'),
-          h1 = document.createElement('h1'),
-          headerP = document.createElement('p'),
-          p = document.createElement('p'),
-          p2 = document.createElement('p'),
-          p3 = document.createElement('p')
+    const titleSection = document.getElementById('rtw-title-section'),
+          divMetaData = document.createElement('div'),
+          divRepoData = document.createElement('div'),
+          repoName = document.createElement('h1'),
+          pDescription = document.createElement('p'),
+          helpText = document.createElement('p'),
+          pStars = document.createElement('p'),
+          pWatchers = document.createElement('p'),
+          pForks = document.createElement('p'),
+          pIssues = document.createElement('p')
 
-    header.innerHTML = ''
-    footer.innerHTML = ''
-    headerP.innerHTML = '<p>Need help getting started? Type <span>/help</span>. Or look on <a href="https://developer.mozilla.org/nl/docs/Web/HTML" target="_blank">MDN</a>.</p>'
+    titleSection.innerHTML = ''
+    helpText.innerHTML = 'Need help getting started? Type <span>/help</span> in the terminal. Or look on <a href="https://developer.mozilla.org/nl/docs/Web/HTML" target="_blank">MDN</a>.'
 
-    h1.textContent = parseRepoData.name
-    p.textContent = 'Stars: ' + parseRepoData.stargazers_count
-    p2.textContent = 'Watchers: ' + parseRepoData.watchers
-    p3.textContent = 'Forks: ' + parseRepoData.forks
+    pDescription.className = 'rtw-repo-description'
 
-    header.insertBefore(h1, header.firstChild)
-    header.appendChild(headerP)
-    footer.appendChild(p)
-    footer.appendChild(p2)
-    footer.appendChild(p3)
+    repoName.textContent = parseRepoData.name
+    pDescription.textContent = parseRepoData.description
+    pIssues.textContent = 'Issues: ' + parseRepoData.open_issues
+    pWatchers.textContent = 'Watchers: ' + parseRepoData.watchers
+    pStars.textContent = 'Stars: ' + parseRepoData.stargazers_count
+    pForks.textContent = 'Forks: ' + parseRepoData.forks
+
+    titleSection.appendChild(divMetaData)
+    titleSection.appendChild(divRepoData)
+    divMetaData.appendChild(repoName)
+    divMetaData.appendChild(pDescription)
+    divMetaData.appendChild(helpText)
+    divRepoData.appendChild(pIssues)
+    divRepoData.appendChild(pWatchers)
+    divRepoData.appendChild(pStars)
+    divRepoData.appendChild(pForks)
   }
 }
 
