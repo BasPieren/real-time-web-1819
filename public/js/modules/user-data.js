@@ -15,8 +15,6 @@ function getUserData() {
             a = document.createElement('a'),
             img = document.createElement('img')
 
-      console.log(res)
-
 			h3.textContent = `${res.name}`
       a.href = 'http://localhost:3000'
       a.textContent = 'Sign Out'
