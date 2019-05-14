@@ -25,7 +25,7 @@ body {
   background-color: var(--white);
 }
 
-h1, h2, h3, h4, h5, h6, p, a {
+h1, h2, h3, h4, h5, h6, p, a, label {
   font-family: system-ui, Helvetica, Arial, sans-serif;
 }
 
@@ -131,7 +131,7 @@ header img {
   grid-gap: 1em;
 }
 
-#rtw-title-section div:last-of-type p {
+.rtw-repo-data {
   padding: 0.5em 1em;
   color: #24292e;
   font-weight: 600;
@@ -158,13 +158,13 @@ header img {
 /* ---------- CREATE REPO ---------- */
 #rtw-create-repo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin: 0 0 1em 0;
 }
 
 #rtw-create-repo label {
   margin: 0 0.5em 0 0;
-  color: #ffffff;
+  color: var(--dark-blue);
 }
 
 #rtw-create-repo input[type='text'] {
@@ -176,8 +176,14 @@ header img {
 }
 
 #rtw-create-repo button {
-  margin: 0 0 0 auto;
+  margin: 0 auto 0 2em;
   padding: 0.5em;
+}
+
+.rtw-join-repo {
+  display: flex!important;
+  flex-direction: column;
+  font-weight: 300;
 }
 
 /* ---------- TEXT EDITOR ---------- */
