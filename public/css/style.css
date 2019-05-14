@@ -2,11 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Source+Code+Pro:300,400,500,700,900');
 
 /* ---------- COLORS ---------- */
-/* GREEN: #00ec26 */
-/* LIGHT BLUE: #61bfd0 */
-/* PINK: #f72d73 */
-/* DARK BLACK: #1e1f1c */
-/* LIGHT BLACK: #272823 */
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --light-grey: #fafbfc;
+  --dark-grey: #e1e4e8;
+  --dark-blue: #24292e;
+}
 
 /* ---------- FONT AWESOME ---------- */
 .fa-github {
@@ -19,46 +21,12 @@
   padding: 0;
 }
 
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  height: 10vh;
-  font-family: 'Roboto', sans-serif;
-  background-color: #1e1f1c;
-  box-sizing: border-box;
-}
-
-nav a {
-  color: #ffffff;
-  transition: 0.3s;
-}
-
-nav a:hover {
-  color: #00ec26;
-}
-
-nav h3 {
-  margin: 0 auto 0 1em;
-  font-family: 'Roboto', sans-serif;
-  color: #ffffff;
-}
-
-nav img {
-  width: auto;
-  max-height: 3em;
-  border-radius: 50%;
-}
-
 body {
-  height: 100vh;
-  box-sizing: border-box;
-  background-color: #272823;
+  background-color: var(--white);
 }
 
-h1, h2, h3, h4, h5, h6, p {
-  font-family: 'Source Code', monospace;
+h1, h2, h3, h4, h5, h6, p, a {
+  font-family: system-ui, Helvetica, Arial, sans-serif;
 }
 
 h3 {
@@ -70,32 +38,8 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1em;
-  padding: 1em;
+  padding: 1em 5em;
   box-sizing: border-box;
-}
-
-header {
-  padding: 1em;
-  height: 15vh;
-  color: #ffffff;
-  box-sizing: border-box;
-}
-
-header h1 {
-  margin-bottom: 0.5em;
-  text-transform: uppercase;
-}
-
-header h1 ~ p {
-  margin-bottom: 1em;
-}
-
-header h1 span, p span {
-  color: #f72d73;
-}
-
-header a {
-  color: #61bfd0;
 }
 
 ul {
@@ -104,7 +48,6 @@ ul {
 
 ul li {
   margin: 0.5em 0;
-  font-family: 'Source Code', monospace;
   color: #00ec26;
 }
 
@@ -112,25 +55,107 @@ ul li:first-child {
   margin: 0;
 }
 
-footer {
+.rtw-source-code {
+  font-family: 'Source Code', monospace;
+}
+
+/* ---------- HEADER ---------- */
+header {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: 1em;
-  height: 15vh;
-  color: #ffffff;
+  background-color: var(--dark-blue);
   box-sizing: border-box;
 }
 
-footer p {
+header a {
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+header a:hover {
+  color: #00ec26;
+}
+
+header h3 {
+  margin: 0 auto 0 1em;
+  color: #ffffff;
+}
+
+header img {
+  width: auto;
+  max-height: 32px;
+  border-radius: 50%;
+}
+
+/* ---------- TITLE ---------- */
+#rtw-title-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+  padding: 1em 5em;
+  color: var(--dark-blue);
+  background-color: var(--light-grey);
+  border-bottom: 1px solid var(--dark-grey);
+  box-sizing: border-box;
+}
+
+#rtw-title-section h1 {
+  margin-bottom: .25em;
+  text-transform: uppercase;
+}
+
+#rtw-title-section h1 span, p span {
+  color: #f72d73;
+  font-weight: 500;
+}
+
+#rtw-title-section a {
+  color: #61bfd0;
+  font-weight: 500;
+}
+
+
+#rtw-title-section div:first-of-type p:last-child {
+  font-weight: 300;
+}
+
+.rtw-repo-description {
+  margin-bottom: 1.5em;
+}
+
+#rtw-title-section div:last-of-type {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1em;
+}
+
+#rtw-title-section div:last-of-type p {
   padding: 0.5em 1em;
   color: #24292e;
-  background-color: #eff3f6;
-  border: 1px solid #1b1e22;
+  font-weight: 600;
+  background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+  border: 1px solid rgba(27,31,35,.2);
   border-radius: .25em;
 }
 
-/* ---------- IDS ---------- */
+/* ---------- LOGIN ---------- */
+.rtw-github-login {
+  padding: 1em;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: center;
+  background-color: #444444;
+  border: 1px solid #1e1f1c;
+  transition: 0.3s;
+}
+
+.rtw-github-login:hover {
+  background-color: #1e1f1c;
+}
+
+/* ---------- CREATE REPO ---------- */
 #rtw-create-repo {
   display: flex;
   align-items: center;
@@ -139,7 +164,6 @@ footer p {
 
 #rtw-create-repo label {
   margin: 0 0.5em 0 0;
-  font-family: 'Roboto', sans-serif;
   color: #ffffff;
 }
 
@@ -156,14 +180,9 @@ footer p {
   padding: 0.5em;
 }
 
-#rtw-text-editor-form button,  #rtw-chat-box-form button {
-  display: none;
-}
-
+/* ---------- TEXT EDITOR ---------- */
 #rtw-text-editor {
-  height: 15px;
   width: 100%;
-  font-family: 'Source Code', monospace;
   font-size: 1em;
   color: #00ec26;
   border-top: none;
@@ -177,12 +196,16 @@ footer p {
 #rtw-text-editor-output {
   margin-top: 1em;
   padding: 1em;
-  height: 82.2%;
+  height: 83%;
   color: #00ec26;
   line-height: 1.6;
   background-color: #1e1f1c;
   border: 1px solid #ffffff;
   box-sizing: border-box;
+}
+
+#rtw-text-editor-output p{
+  font-family: 'Source Code', monospace!important;
 }
 
 #rtw-text-editor:active, #rtw-text-editor:focus {
@@ -191,11 +214,20 @@ footer p {
   animation: none;
 }
 
+#rtw-text-editor-form button,  #rtw-chat-box-form button {
+  display: none;
+}
+
+.rtw-not-valid {
+  color: red;
+}
+
+/* ---------- CHATBOX ---------- */
 #rtw-chat-box {
   margin-top: 1em;
   padding-left: 1em;
   width: 100%;
-  height: 100px;
+  height: 60px;
   font-size: 1em;
   color: #ffffff;
   background-color: #1e1f1c;
@@ -220,9 +252,12 @@ footer p {
   background-color: #43463f;
 }
 
-/* ---------- CLASSES ---------- */
-.rtw-not-valid {
-  color: red;
+.rtw-chat-html {
+  padding: 0.1em 0.5em;
+  color: #1e1f1c;
+  text-transform: lowercase;
+  background-color: #f6f8fa;
+  border-radius: 0.25em;
 }
 
 .rtw-user-connected {
@@ -233,29 +268,6 @@ footer p {
 .rtw-user-disconnected {
   color: red;
   font-style: italic;
-}
-
-.rtw-chat-html {
-  padding: 0.1em 0.5em;
-  color: #1e1f1c;
-  text-transform: lowercase;
-  background-color: #f6f8fa;
-  border-radius: 0.5em;
-}
-
-.rtw-github-login {
-  padding: 1em;
-  color: #ffffff;
-  font-family: 'Roboto', sans-serif;
-  text-decoration: none;
-  text-align: center;
-  background-color: #444444;
-  border: 1px solid #1e1f1c;
-  transition: 0.3s;
-}
-
-.rtw-github-login:hover {
-  background-color: #1e1f1c;
 }
 
 /* ---------- KEYFRAMES ---------- */
