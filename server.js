@@ -80,6 +80,8 @@ function createRepo(req, res) {
 // ---------- SOCKET.IO ---------- //
 
 io.on('connection', socket => {
+  socket.join('some room')
+
   let userID = socket.id
 
   io.emit('user connected', userID)
@@ -92,26 +94,26 @@ io.on('connection', socket => {
       let atrb = getAtrb.exec(input),
           atrbVal = getAtrbVal.exec(input)
 
-      io.emit('create element', atrb, atrbVal)
+      io.to('some room').emit('create element', atrb, atrbVal)
     } else if (input.startsWith('/')) {
       const getCommand = /(\/)([\w\d]*)/g
 
       let command = getCommand.exec(input)
 
-      io.emit('call command', command)
+      io.to('some room').emit('call command', command)
     } else {
-      io.emit('editor input', input)
+      io.to('some room').emit('editor input', input)
     }
   })
 
   socket.on('chat message', msg => {
     let splitMsg = msg.split(' ')
 
-    io.emit('new message', splitMsg)
+    io.to('some room').emit('new message', splitMsg)
   })
 
   socket.on('disconnect', () => {
-    io.emit('user disconnected', userID)
+    io.to('some room').emit('user disconnected', userID)
   })
 })
 
