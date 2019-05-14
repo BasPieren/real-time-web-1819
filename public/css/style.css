@@ -156,8 +156,13 @@ ul li:first-child {
 
 #rtw-text-editor-output {
   margin-top: 1em;
+  padding: 1em;
+  height: 82.2%;
   color: #00ec26;
   line-height: 1.6;
+  background-color: #1e1f1c;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
 }
 
 #rtw-text-editor:active, #rtw-text-editor:focus {
