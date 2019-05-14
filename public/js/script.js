@@ -2,23 +2,15 @@
 
 import { socket } from './modules/socket.js'
 import { getUserData } from './modules/user-data.js'
-import { getRepoData } from './modules/repo-data.js'
-import * as render from './modules/render-data.js'
+import * as repo_data from './modules/repo-data.js'
 
-function saveRepoName() {
-  const form = document.getElementById('rtw-create-repo')
+function repoDataInterval() {
+  repo_data.getRepoData()
 
-  if (document.body.contains(form)) {
-    form.addEventListener('submit', () => {
-      let repoName = document.getElementsByName('repo-name')[0].value
-
-      localStorage.setItem('repoName', repoName)
-    })
-  }
+  setInterval(repo_data.getRepoData, 60000)
 }
 
-saveRepoName()
 getUserData()
-getRepoData()
-render.renderRepoData()
-// socket()
+repo_data.saveRepoName()
+repoDataInterval()
+socket()
