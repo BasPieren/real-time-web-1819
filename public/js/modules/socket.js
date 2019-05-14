@@ -6,104 +6,106 @@ function socket() {
         chatBox = document.getElementById('rtw-chat-box-form'),
         chatInput = document.getElementById('rtw-chat-box'),
         chatOutput = document.getElementById('rtw-chat-messages'),
-        chatMessages = document.getElementById('rtw-chat-messages')
+        chatMessages = document.getElementById('rtw-chat-messages'),
+        form = document.getElementById('rtw-text-editor-form')
 
-  editorInput.focus()
+  if (document.body.contains(form)) {
 
-  // ---------- TEXT EDITOR ---------- //
+    editorInput.focus()
 
-  textEditor.onsubmit = (e => {
-    e.preventDefault()
+    // ---------- TEXT EDITOR ---------- //
 
-    socket.emit('editor input', editorInput.value)
+    textEditor.onsubmit = (e => {
+      e.preventDefault()
 
-    editorInput.value = ''
+      socket.emit('editor input', editorInput.value)
 
-    return false
-  })
-  socket.on('create element', (atrb, atrbVal) => {
-    let createElement = document.createElement(atrb[2])
+      editorInput.value = ''
 
-    createElement.textContent = atrbVal[2]
+      return false
+    })
+    socket.on('create element', (atrb, atrbVal) => {
+      let createElement = document.createElement(atrb[2])
 
-    editorOutput.appendChild(createElement)
-  })
-  socket.on('call command', command => {
-    const p = document.createElement('p')
+      createElement.textContent = atrbVal[2]
 
-    p.textContent = 'Lets start with something simple, type "Hello World!" in a <h1> tag.'
+      editorOutput.appendChild(createElement)
+    })
+    socket.on('call command', command => {
+      const p = document.createElement('p')
 
-    editorOutput.appendChild(p)
-  })
-  socket.on('editor input', input => {
-    const p = document.createElement('p')
+      p.textContent = 'Lets start with something simple, type "Hello World!" in a <h1> tag.'
 
-    p.textContent = 'Not a valid HTML tag'
-    p.className = 'rtw-not-valid'
+      editorOutput.appendChild(p)
+    })
+    socket.on('editor input', input => {
+      const p = document.createElement('p')
 
-    editorOutput.appendChild(p)
-  })
+      p.textContent = 'Not a valid HTML tag'
+      p.className = 'rtw-not-valid'
 
-  // ---------- CHATBOX ---------- //
+      editorOutput.appendChild(p)
+    })
 
-  chatBox.onsubmit = (e => {
-    e.preventDefault()
+    // ---------- CHATBOX ---------- //
 
-    socket.emit('chat message', chatInput.value)
+    chatBox.onsubmit = (e => {
+      e.preventDefault()
 
-    chatInput.value = ''
+      socket.emit('chat message', chatInput.value)
 
-    return false
-  })
-  socket.on('new message', splitMsg => {
-    let htmlElement = []
+      chatInput.value = ''
 
-    const htmlElementPush = splitMsg.map(e => {
-            if (e.startsWith('<') && e.endsWith('>')) {
-              const span = document.createElement('span')
+      return false
+    })
+    socket.on('new message', splitMsg => {
+      let htmlElement = []
 
-              span.textContent = e
-              span.className = 'rtw-chat-html'
+      const htmlElementPush = splitMsg.map(e => {
+              if (e.startsWith('<') && e.endsWith('>')) {
+                const span = document.createElement('span')
 
-              htmlElement.push(span)
-            }
-          }),
-          removeHTML = splitMsg.map(e => {
-            if (e.startsWith('<') === true) {
-              return ''
-            } else {
-              return e
-            }
-          }),
-          joinMsg = removeHTML.join(' ') ,
-          li = document.createElement('li')
+                span.textContent = e
+                span.className = 'rtw-chat-html'
 
-    li.textContent = joinMsg
+                htmlElement.push(span)
+              }
+            }),
+            removeHTML = splitMsg.map(e => {
+              if (e.startsWith('<') === true) {
+                return ''
+              } else {
+                return e
+              }
+            }),
+            joinMsg = removeHTML.join(' ') ,
+            li = document.createElement('li')
 
-    chatOutput.appendChild(li)
+      li.textContent = joinMsg
 
-    if (htmlElement.length > 0) {
-      li.appendChild(htmlElement[0])
-    }
-  })
+      chatOutput.appendChild(li)
 
-  socket.on('user connected', userID => {
-    const li = document.createElement('li')
+      if (htmlElement.length > 0) {
+        li.appendChild(htmlElement[0])
+      }
+    })
+    socket.on('user connected', userID => {
+      const li = document.createElement('li')
 
-    li.textContent = userID + ' connected'
-    li.className = 'rtw-user-connected'
+      li.textContent = userID + ' connected'
+      li.className = 'rtw-user-connected'
 
-    chatOutput.appendChild(li)
-  })
+      chatOutput.appendChild(li)
+    })
+    socket.on('user disconnected', userID => {
+      const li = document.createElement('li')
 
-  socket.on('user disconnected', userID => {
-    const li = document.createElement('li')
+      li.textContent = userID + ' disconnected'
+      li.className = 'rtw-user-disconnected'
 
-    li.textContent = userID + ' disconnected'
-    li.className = 'rtw-user-disconnected'
-
-    chatOutput.appendChild(li)
-  })
-}
+      chatOutput.appendChild(li)
+    })
+  }
+  }
 
 export { socket }
