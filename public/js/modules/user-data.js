@@ -9,6 +9,9 @@ function getUserData() {
   })
     .then(res => res.json())
     .then(res => {
+      localStorage.setItem('userName', res.name)
+    })
+    .then(res => {
       const body = document.querySelector('body'),
             header = document.createElement('header'),
             h3 = document.createElement('h3'),
