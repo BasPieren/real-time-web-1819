@@ -9,6 +9,8 @@ function socket() {
         chatMessages = document.getElementById('rtw-chat-messages'),
         form = document.getElementById('rtw-text-editor-form')
 
+  let userName = localStorage.getItem('userName')
+
   if (document.body.contains(form)) {
 
     editorInput.focus()
@@ -81,7 +83,7 @@ function socket() {
             joinMsg = removeHTML.join(' ') ,
             li = document.createElement('li')
 
-      li.textContent = joinMsg
+      li.textContent = userName + ': ' + joinMsg
 
       chatOutput.appendChild(li)
 
@@ -91,8 +93,6 @@ function socket() {
     })
     socket.on('user connected', userID => {
       const li = document.createElement('li')
-
-      let userName = localStorage.getItem('userName')
 
       li.textContent = userName + ' connected'
       li.className = 'rtw-user-connected'
