@@ -1,3 +1,11 @@
+import * as repo_data from './repo-data.js'
+
+function repoDataInterval() {
+  repo_data.getRepoData()
+
+  setInterval(repo_data.getRepoData, 10000)
+}
+
 function socket() {
   const socket = io(),
         textEditor = document.getElementById('rtw-text-editor-form'),
@@ -14,6 +22,11 @@ function socket() {
   if (document.body.contains(form)) {
 
     editorInput.focus()
+
+    // ---------- REPO DATA ---------- //
+    socket.on('repo data', () => {
+      repoDataInterval()
+    })
 
     // ---------- TEXT EDITOR ---------- //
 
@@ -91,7 +104,7 @@ function socket() {
         li.appendChild(htmlElement[0])
       }
     })
-    socket.on('user connected', userID => {
+    socket.on('user connected', () => {
       const li = document.createElement('li')
 
       li.textContent = userName + ' connected'
@@ -99,10 +112,10 @@ function socket() {
 
       chatOutput.appendChild(li)
     })
-    socket.on('user disconnected', userID => {
+    socket.on('user disconnected', () => {
       const li = document.createElement('li')
 
-      li.textContent = userID + ' disconnected'
+      li.textContent = userName + ' disconnected'
       li.className = 'rtw-user-disconnected'
 
       chatOutput.appendChild(li)

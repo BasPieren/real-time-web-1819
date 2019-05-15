@@ -80,9 +80,9 @@ function createRepo(req, res) {
 // ---------- SOCKET.IO ---------- //
 
 io.on('connection', socket => {
-  let userID = socket.id
+  io.emit('user connected')
 
-  io.emit('user connected', userID)
+  io.emit('repo data')
 
   socket.on('editor input', input => {
     if (input.startsWith('<') && input.endsWith('>')) {
@@ -111,7 +111,7 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
-    io.emit('user disconnected', userID)
+    io.emit('user disconnected')
   })
 })
 
