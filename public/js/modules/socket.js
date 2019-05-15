@@ -92,7 +92,9 @@ function socket() {
     socket.on('user connected', userID => {
       const li = document.createElement('li')
 
-      li.textContent = userID + ' connected'
+      let userName = localStorage.getItem('userName')
+
+      li.textContent = userName + ' connected'
       li.className = 'rtw-user-connected'
 
       chatOutput.appendChild(li)
