@@ -10,8 +10,10 @@ function getUserData() {
     .then(res => res.json())
     .then(res => {
       localStorage.setItem('userName', `${res.name}`)
+      return res
     })
     .then(res => {
+      console.log(res)
       const body = document.querySelector('body'),
             header = document.createElement('header'),
             h3 = document.createElement('h3'),
@@ -19,7 +21,7 @@ function getUserData() {
             img = document.createElement('img')
 
 			h3.textContent = `${res.name}`
-      a.href = 'https://bas-pieren-real-time-web.herokuapp.com/'
+      a.href = 'http://localhost:3000/'
       a.textContent = 'Sign Out'
       img.src = `${res.avatar_url}`
 
