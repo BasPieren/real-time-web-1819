@@ -20,6 +20,7 @@ This is my repo for the Real-Time Web course
   * [OAuth](#oauth)
   * [Create Repo](#create-repo)
   * [Namespace](#namespace)
+  * [Polling Data](#polling-data)
   * [Chat and Terminal](#chat-and-terminal)
 * [Sources](#sources-)
   * [Honourable Mentions](#honourable-mentions)
@@ -226,13 +227,215 @@ io.on('connection', socket => {
   socket.on('repo name', repoName => {
     let nsp = io.of('/' + repoName)
 
-    socketTest(nsp)
+    runSocket(nsp)
   })
 })
 ```
 
-### Chat and Terminal
+### Polling Data
+On the `/dashboard` page the user is able to see the number of issues, watchers, stars, and forks. We use an `setInterval()` to poll the function every 10 seconds to check for new data and render it.
 
+##### getRepoData()
+```js
+function getRepoData() {
+  const getUrl = window.location.search.substring(1),
+        userToken = getUrl.split('access_token=')[1],
+        form = document.getElementById('rtw-text-editor-form')
+
+  let repoDataSocket = io('/repo-data'),
+      repoName = localStorage.getItem('repoName')
+
+  if (document.body.contains(form)) {
+    fetch('https://api.github.com/user/repos', {
+      headers: {
+        Authorization: 'token ' + userToken
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+
+        res.forEach(i => {
+
+          if (i.name === repoName) {
+            localStorage.setItem('repoData', JSON.stringify(i))
+
+            render.renderRepoData()
+          }
+        })
+      })
+      .catch(err => console.error(err))
+  }
+}
+```
+##### Polling
+```js
+function repoDataInterval() {
+  repo_data.getRepoData()
+
+  setInterval(repo_data.getRepoData, 10000)
+}
+
+repoDataInterval()
+```
+
+### Chat and Terminal
+On the `/dashboard` page the user is able to write HTML in a in browser text editor and talk with other people about it using a chat box. Each action has its own `socket.io` emit.
+
+For example when a user connects we use `nsp.emit('user connected')` on the server, we handle that emit client side by adding a 'Username connected' to the chat.  
+
+##### Node.js
+```js
+function runSocket(nsp) {
+  nsp.on('connection', socket => {
+    nsp.emit('user connected')
+
+    socket.on('editor input', input => {
+      if (input.startsWith('<') && input.endsWith('>')) {
+        const getAtrb = /(<)([\w\d]*)/g,
+              getAtrbVal = /(>)([\w\d\s\W]*)(<)/g
+
+        let atrb = getAtrb.exec(input),
+            atrbVal = getAtrbVal.exec(input)
+
+        nsp.emit('create element', atrb, atrbVal)
+      } else if (input.startsWith('/')) {
+        const getCommand = /(\/)([\w\d]*)/g
+
+        let command = getCommand.exec(input)
+
+        nsp.emit('call command', command)
+      } else {
+        nsp.emit('editor input', input)
+      }
+    })
+
+    socket.on('chat message', msg => {
+      let splitMsg = msg.split(' ')
+
+      nsp.emit('new message', splitMsg)
+    })
+
+    socket.on('disconnect', () => {
+      nsp.emit('user disconnected')
+    })
+  })
+}
+```
+
+##### Javascript
+```js
+function socket() {
+  const textEditor = document.getElementById('rtw-text-editor-form'),
+        editorInput = document.getElementById('rtw-text-editor'),
+        editorOutput = document.getElementById('rtw-text-editor-output'),
+        chatBox = document.getElementById('rtw-chat-box-form'),
+        chatInput = document.getElementById('rtw-chat-box'),
+        chatOutput = document.getElementById('rtw-chat-messages'),
+        chatMessages = document.getElementById('rtw-chat-messages'),
+        form = document.getElementById('rtw-text-editor-form'),
+        socket = io()
+
+  let userName = localStorage.getItem('userName'),
+      getRepoName = localStorage.getItem('repoName'),
+      dashboard = io('/' + getRepoName)
+
+  editorInput.focus()
+
+  // ---------- TEXT EDITOR ---------- //
+
+  textEditor.onsubmit = (e => {
+    e.preventDefault()
+
+    dashboard.emit('editor input', editorInput.value)
+
+    editorInput.value = ''
+
+    return false
+  })
+  dashboard.on('create element', (atrb, atrbVal) => {
+    let createElement = document.createElement(atrb[2])
+
+    createElement.textContent = atrbVal[2]
+
+    editorOutput.appendChild(createElement)
+  })
+  dashboard.on('call command', command => {
+    const p = document.createElement('p')
+
+    p.textContent = 'Lets start with something simple, type "Hello World!" in a <h1> tag.'
+
+    editorOutput.appendChild(p)
+  })
+  dashboard.on('editor input', input => {
+    const p = document.createElement('p')
+
+    p.textContent = 'Not a valid HTML tag'
+    p.className = 'rtw-not-valid'
+
+    editorOutput.appendChild(p)
+  })
+
+  // ---------- CHATBOX ---------- //
+
+  chatBox.onsubmit = (e => {
+    e.preventDefault()
+
+    dashboard.emit('chat message', chatInput.value)
+
+    chatInput.value = ''
+
+    return false
+  })
+  dashboard.on('new message', splitMsg => {
+    let htmlElement = []
+
+    const htmlElementPush = splitMsg.map(e => {
+            if (e.startsWith('<') && e.endsWith('>')) {
+              const span = document.createElement('span')
+
+              span.textContent = e
+              span.className = 'rtw-chat-html'
+
+              htmlElement.push(span)
+            }
+          }),
+          removeHTML = splitMsg.map(e => {
+            if (e.startsWith('<') === true) {
+              return ''
+            } else {
+              return e
+            }
+          }),
+          joinMsg = removeHTML.join(' ') ,
+          li = document.createElement('li')
+
+    li.textContent = userName + ': ' + joinMsg
+
+    chatOutput.appendChild(li)
+
+    if (htmlElement.length > 0) {
+      li.appendChild(htmlElement[0])
+    }
+  })
+  dashboard.on('user connected', () => {
+    const li = document.createElement('li')
+
+    li.textContent = userName + ' connected'
+    li.className = 'rtw-user-connected'
+
+    chatOutput.appendChild(li)
+  })
+  dashboard.on('user disconnected', () => {
+    const li = document.createElement('li')
+
+    li.textContent = userName + ' disconnected'
+    li.className = 'rtw-user-disconnected'
+
+    chatOutput.appendChild(li)
+  })
+}
+```
 
 ## Sources 📚
 This is a list of all the sources I used during this project:
