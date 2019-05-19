@@ -130,7 +130,18 @@ This is a sketch of the most important screen.
 > Homepage sketch
 
 ### Data Life Cycle
-![Data Life Cycle](https://i.imgur.com/cwbVmTx.jpg)
+
+<details>
+  <summary>Version 1</summary>
+
+  ![Data Life Cycle](https://i.imgur.com/cwbVmTx.jpg)
+</details>
+
+<details>
+  <summary>Version 2</summary>
+
+![Data Life Cycle v2](https://i.imgur.com/iPqdyDn.jpg)
+</details>
 
 ## How It Works 🛠️
 Here I explain the core features of this project.
