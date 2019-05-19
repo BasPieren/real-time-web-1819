@@ -2,7 +2,7 @@
 
 This is my repo for the Real-Time Web course
 
-![Real Time Web Screenshot](https://i.imgur.com/t95Kias.png)
+![Real Time Web Screenshot](https://i.imgur.com/XvlQ6Ck.png)
 > Learn HTML Together chat app
 
 ## Table of Contents 🗃
