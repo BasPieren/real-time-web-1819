@@ -17,6 +17,10 @@ This is my repo for the Real-Time Web course
   * [Skecth](#skecth)
   * [Data Life Cycle](#data-life-cycle)
 * [How It Works](#how-it-works-️)
+  * [OAuth](#oauth)
+  * [Create Repo](#create-repo)
+  * [Namespace](#namespace)
+  * [Chat and Terminal](#chat-and-terminal)
 * [Sources](#sources-)
   * [Honourable Mentions](#honourable-mentions)
 * [Licence](#licence-)
@@ -51,6 +55,8 @@ This project makes use of the following packages and technologies:
 * [Express](https://expressjs.com/)
 * [EJS](https://ejs.co/)
 * [Socket.io](http://socket.io)
+* [Axios](https://www.npmjs.com/package/axios)
+* [octokit/rest.js](https://octokit.github.io/rest.js/)
 
 ## API 🐒
 I made use of the following API for this project:
@@ -125,14 +131,108 @@ This is a sketch of the most important screen.
 ### Data Life Cycle
 ![Data Life Cycle](https://i.imgur.com/cwbVmTx.jpg)
 
-### Feedback
-I would like feedback on the following points:
-
-  * What do you think of my concept? Are their areas on which I cloud improve? Most importantly when it comes to the data being used.
-  * Is the data life cycle clear enough? Are their things I didn't account for?
-
 ## How It Works 🛠️
 Here I explain the core features of this project.
+
+### OAuth
+One of the first core features is to make the user login using OAuth. This is important because we are going to not only 'read' the data from the GitHub API but also 'write'. When the user logs in they authorize the Learn HTML Together web app to read all data and both read and create repo data.
+
+When the user arrives on the home page they can click the 'Sign in with GitHub' button which will send them to the GitHub OAuth environment. When the user authorises the login they get redirect back to the web app.
+
+##### HTML
+```html
+<a class="rtw-github-login" href="https://github.com/login/oauth/authorize?client_id=858ee90bdd14f311d9d2&scope=user%20repo&redirect_uri=http://localhost:3000/redirect"><i class="fab fa-github"></i> Sign in with GitHub</a>
+```
+
+The when the redirect comes in the server starts handling it. The `OAuthRedirect` function starts by swamping the `requestToken` for a randomly generated `accessToken` using a `axios()` HTTP request.
+
+When we have the `accessToken` we redirect the user to the `/create-repo` page and add the `accessToken` to the url. This way we can always use it when we need it. It may not be the most secure way but for now it's fine.
+
+##### Node.js
+```js
+.get('/redirect', OAuthRedirect)
+
+function OAuthRedirect(req, res) {
+  const requestToken = req.query.code
+
+  axios({
+    method: 'post',
+    url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}`,
+    headers: {
+      accept: 'application/json'
+    }
+  }).then(response => {
+    const accessToken = response.data.access_token
+
+    authAccessToken.push(accessToken)
+
+    res.redirect(`/create-repo?access_token=${accessToken}`)
+  }).catch(err => console.error(err))
+}
+```
+
+### Create Repo
+When the user is logged in, they can create a GitHub repo. When they fill in the form and post it the `createRepo` function starts. We use the `octokit/rest.js` npm package to act as a wrapper that makes interacting whit the GitHub API more easy.
+
+We use `createForAuthenticatedUser()` to send the needed parameters for creating a repo:
+
+* __name:__ The repo name.
+* __description:__ The repo description.
+* __auto_init:__  To create an initial commit with empty README.
+* __has_issues:__ To enable issues.
+
+We get the repo name and description form the form the user fills in. When the repo gets created the user gets redirected to the `/dashboard` page
+
+```js
+.post('/dashboard', createRepo)
+
+function createRepo(req, res) {
+  octokit.repos.createForAuthenticatedUser({
+    name: req.body['repo-name'],
+    description: req.body['repo-description'],
+    auto_init: true,
+    has_issues: true
+  }).catch(err => console.error(err))
+
+  res.redirect(`/dashboard?access_token=${authAccessToken[0]}`)
+}
+```
+
+### Namespace
+When the user creates a repo the also create a personal `socket.io` namespace which other people are able to join, in theory. When the repo gets created we `emit` the repo name to the server.
+
+##### Javascript
+```js
+function saveRepoName() {
+  const form = document.getElementById('rtw-create-repo'),
+        socket = io()
+
+  if (document.body.contains(form)) {
+    form.addEventListener('submit', () => {
+      let repoName = document.getElementsByName('repo-name')[0].value
+
+      socket.emit('repo name', repoName)
+
+      localStorage.setItem('repoName', repoName)
+    })
+  }
+}
+```
+The `emit` gets handled by the server and saves the repo name into the `nsp` variable. We pass `nsp` as parameter into `socketTest()` which handles the other `socket.io` functionality's.
+
+##### Node.js
+```js
+io.on('connection', socket => {
+  socket.on('repo name', repoName => {
+    let nsp = io.of('/' + repoName)
+
+    socketTest(nsp)
+  })
+})
+```
+
+### Chat and Terminal
+
 
 ## Sources 📚
 This is a list of all the sources I used during this project:
