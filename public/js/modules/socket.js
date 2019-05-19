@@ -17,14 +17,6 @@ function socket() {
 
   editorInput.focus()
 
-  // ---------- REPO DATA ---------- //
-
-  dashboard.on('repo data', i => {
-    console.log('Het blijft een verassing')
-
-    render.renderRepoData(i)
-  })
-
   // ---------- TEXT EDITOR ---------- //
 
   textEditor.onsubmit = (e => {

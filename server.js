@@ -101,13 +101,6 @@ function runSocket(nsp) {
 
     socket.broadcast.emit('user connected')
 
-    socket.on('repo data', i => {
-      console.log('Waarom doet deze shit het niet? V2')
-      console.log(i)
-
-      nsp.to('personal dashboard').emit('new repo data', i)
-    })
-
     socket.on('editor input', input => {
       if (input.startsWith('<') && input.endsWith('>')) {
         const getAtrb = /(<)([\w\d]*)/g,

@@ -9,28 +9,26 @@ function getRepoData() {
   let repoDataSocket = io('/repo-data'),
       repoName = localStorage.getItem('repoName')
 
-  fetch('https://api.github.com/user/repos', {
-    headers: {
-      Authorization: 'token ' + userToken
-    }
-  })
-    .then(res => res.json())
-    .then(res => {
-
-      res.forEach(i => {
-
-        if (i.name === repoName) {
-          console.log(i)
-
-          socket.emit('repo data', i)
-
-          localStorage.setItem('repoData', JSON.stringify(i))
-
-          render.renderRepoData()
-        }
-      })
+  if (document.body.contains(form)) {
+    fetch('https://api.github.com/user/repos', {
+      headers: {
+        Authorization: 'token ' + userToken
+      }
     })
-    .catch(err => console.error(err))
+      .then(res => res.json())
+      .then(res => {
+
+        res.forEach(i => {
+
+          if (i.name === repoName) {
+            localStorage.setItem('repoData', JSON.stringify(i))
+
+            render.renderRepoData()
+          }
+        })
+      })
+      .catch(err => console.error(err))
+  }
 }
 
 function saveRepoName() {
