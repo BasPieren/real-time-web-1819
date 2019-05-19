@@ -35,13 +35,11 @@ app
   .get('/dashboard', dashboardPage)
   .get('/join-dashboard', (req, res) => {
 
-    res.redirect(`/dashboard`)
+    res.redirect(`/dashboard?access_token=${authAccessToken[1]}`)
 
-    io.on('connection', socket => {
-      let nsp = io.of('/github-api-test-repo')
+    let nsp = io.of('/github-api-test-repo')
 
-      runSocket(nsp)
-    })
+    runSocket(nsp)
   })
 
   .post('/dashboard', createRepo)
@@ -99,9 +97,16 @@ io.on('connection', socket => {
 
 function runSocket(nsp) {
   nsp.on('connection', socket => {
-    socket.join('personal dashboard');
+    socket.join('personal dashboard')
 
     socket.broadcast.emit('user connected')
+
+    socket.on('repo data', i => {
+      console.log('Waarom doet deze shit het niet? V2')
+      console.log(i)
+
+      nsp.to('personal dashboard').emit('new repo data', i)
+    })
 
     socket.on('editor input', input => {
       if (input.startsWith('<') && input.endsWith('>')) {

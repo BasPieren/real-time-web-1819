@@ -1,3 +1,5 @@
+import * as render from './render-data.js'
+
 function socket() {
   const textEditor = document.getElementById('rtw-text-editor-form'),
         editorInput = document.getElementById('rtw-text-editor'),
@@ -14,6 +16,14 @@ function socket() {
       dashboard = io('/' + getRepoName)
 
   editorInput.focus()
+
+  // ---------- REPO DATA ---------- //
+
+  dashboard.on('repo data', i => {
+    console.log('Het blijft een verassing')
+
+    render.renderRepoData(i)
+  })
 
   // ---------- TEXT EDITOR ---------- //
 

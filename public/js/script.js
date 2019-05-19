@@ -14,8 +14,8 @@ function repoDataInterval() {
 
 getUserData()
 repo_data.saveRepoName()
-repoDataInterval()
 
 if (document.body.contains(form)) {
+  repoDataInterval()
   socket()
 }

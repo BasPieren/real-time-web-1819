@@ -13,7 +13,6 @@ function getUserData() {
       return res
     })
     .then(res => {
-      console.log(res)
       const body = document.querySelector('body'),
             header = document.createElement('header'),
             h3 = document.createElement('h3'),
