@@ -33,6 +33,16 @@ app
   .get('/redirect', OAuthRedirect)
   .get('/create-repo', createRepoPage)
   .get('/dashboard', dashboardPage)
+  .get('/join-dashboard', (req, res) => {
+
+    res.redirect(`/dashboard`)
+
+    io.on('connection', socket => {
+      let nsp = io.of('/github-api-test-repo')
+
+      runSocket(nsp)
+    })
+  })
 
   .post('/dashboard', createRepo)
 
@@ -89,7 +99,9 @@ io.on('connection', socket => {
 
 function runSocket(nsp) {
   nsp.on('connection', socket => {
-    nsp.emit('user connected')
+    socket.join('personal dashboard');
+
+    socket.broadcast.emit('user connected')
 
     socket.on('editor input', input => {
       if (input.startsWith('<') && input.endsWith('>')) {
@@ -99,26 +111,26 @@ function runSocket(nsp) {
         let atrb = getAtrb.exec(input),
             atrbVal = getAtrbVal.exec(input)
 
-        nsp.emit('create element', atrb, atrbVal)
+        nsp.to('personal dashboard').emit('create element', atrb, atrbVal)
       } else if (input.startsWith('/')) {
         const getCommand = /(\/)([\w\d]*)/g
 
         let command = getCommand.exec(input)
 
-        nsp.emit('call command', command)
+        nsp.to('personal dashboard').emit('call command', command)
       } else {
-        nsp.emit('editor input', input)
+        nsp.to('personal dashboard').emit('editor input', input)
       }
     })
 
     socket.on('chat message', msg => {
       let splitMsg = msg.split(' ')
 
-      nsp.emit('new message', splitMsg)
+      nsp.to('personal dashboard').emit('new message', splitMsg)
     })
 
     socket.on('disconnect', () => {
-      nsp.emit('user disconnected')
+      nsp.to('personal dashboard').emit('user disconnected')
     })
   })
 }
