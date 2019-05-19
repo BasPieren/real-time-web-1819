@@ -5,7 +5,8 @@ function getRepoData() {
         userToken = getUrl.split('access_token=')[1],
         form = document.getElementById('rtw-text-editor-form')
 
-  let repoName = localStorage.getItem('repoName')
+  let repoDataSocket = io('/repo-data'),
+      repoName = localStorage.getItem('repoName')
 
   if (document.body.contains(form)) {
     fetch('https://api.github.com/user/repos', {
@@ -31,11 +32,14 @@ function getRepoData() {
 }
 
 function saveRepoName() {
-  const form = document.getElementById('rtw-create-repo')
+  const form = document.getElementById('rtw-create-repo'),
+        socket = io()
 
   if (document.body.contains(form)) {
     form.addEventListener('submit', () => {
       let repoName = document.getElementsByName('repo-name')[0].value
+
+      socket.emit('repo name', repoName)
 
       localStorage.setItem('repoName', repoName)
     })
