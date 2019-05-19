@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const helper = require('./public/js/modules/helper.js'),
       express = require('express'),
-      request = require('request'),
+      fetch = require('node-fetch'),
       axios = require('axios'),
       bodyParser = require('body-parser'),
       app = express(),
@@ -80,40 +80,48 @@ function createRepo(req, res) {
 // ---------- SOCKET.IO ---------- //
 
 io.on('connection', socket => {
-  io.emit('user connected')
+  socket.on('repo name', repoName => {
+    let nsp = io.of('/' + repoName)
 
-  io.emit('repo data')
-
-  socket.on('editor input', input => {
-    if (input.startsWith('<') && input.endsWith('>')) {
-      const getAtrb = /(<)([\w\d]*)/g,
-            getAtrbVal = /(>)([\w\d\s\W]*)(<)/g
-
-      let atrb = getAtrb.exec(input),
-          atrbVal = getAtrbVal.exec(input)
-
-      io.emit('create element', atrb, atrbVal)
-    } else if (input.startsWith('/')) {
-      const getCommand = /(\/)([\w\d]*)/g
-
-      let command = getCommand.exec(input)
-
-      io.emit('call command', command)
-    } else {
-      io.emit('editor input', input)
-    }
-  })
-
-  socket.on('chat message', msg => {
-    let splitMsg = msg.split(' ')
-
-    io.emit('new message', splitMsg)
-  })
-
-  socket.on('disconnect', () => {
-    io.emit('user disconnected')
+    runSocket(nsp)
   })
 })
+
+function runSocket(nsp) {
+  nsp.on('connection', socket => {
+    nsp.emit('user connected')
+
+    socket.on('editor input', input => {
+      if (input.startsWith('<') && input.endsWith('>')) {
+        const getAtrb = /(<)([\w\d]*)/g,
+              getAtrbVal = /(>)([\w\d\s\W]*)(<)/g
+
+        let atrb = getAtrb.exec(input),
+            atrbVal = getAtrbVal.exec(input)
+
+        nsp.emit('create element', atrb, atrbVal)
+      } else if (input.startsWith('/')) {
+        const getCommand = /(\/)([\w\d]*)/g
+
+        let command = getCommand.exec(input)
+
+        nsp.emit('call command', command)
+      } else {
+        nsp.emit('editor input', input)
+      }
+    })
+
+    socket.on('chat message', msg => {
+      let splitMsg = msg.split(' ')
+
+      nsp.emit('new message', splitMsg)
+    })
+
+    socket.on('disconnect', () => {
+      nsp.emit('user disconnected')
+    })
+  })
+}
 
 http.listen(process.env.PORT || port, () => {
   console.log('listening on *:3000');
